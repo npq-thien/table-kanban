@@ -8,11 +8,11 @@ function App() {
     <div>
       <nav className="bg-gray-300 p-4 flex items-center gap-4 border-b-2 border-black">
         <Link to={"/table"}>
-          <p className="h3-bold hover:text-white">Flowbite Table</p>
+          <p className="h3-bold hover:text-white animation-scale">Flowbite Table</p>
         </Link>
         <span>|</span>
         <Link to={"/kanban"}>
-          <p className="h3-bold hover:text-white">Kanban</p>
+          <p className="h3-bold hover:text-white animation-scale">Kanban</p>
         </Link>
       </nav>
       <div>

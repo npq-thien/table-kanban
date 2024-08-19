@@ -270,7 +270,7 @@ const KanbanBoard = () => {
             <div className="w-[250px] bg-cream rounded-lg p-2">
               <input
                 autoFocus
-                className="w-full rounded-md p-1 focus:border-orange-500 outline-none border-2"
+                className="w-full rounded-md p-1 focus:border-orange-500 border-2"
                 type="text"
                 placeholder="Enter column name"
                 onChange={(e) => setNewColumnTitle(e.target.value)}

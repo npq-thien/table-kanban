@@ -35,6 +35,10 @@
   .animation-color {
     @apply transition ease-in-out duration-300 bg-white hover:bg-blue-400;
   }
+
+  .animation-scale {
+    @apply transition delay-100 hover:scale-110 ease-in-out duration-300
+  }
 }
 
 @layer components {
