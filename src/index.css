@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+.formatted-css ul, li, ol {
+  list-style: revert;
+  margin: revert;
+  padding: revert;
+}
+
+@layer base {
+  formatted-css {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}
+
 @layer utilities {
   /* TYPOGRAPHY */
   .h1-bold {

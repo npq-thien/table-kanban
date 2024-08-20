@@ -2,9 +2,12 @@ import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { MdOutlineSubtitles } from "react-icons/md";
 import { BsTextParagraph } from "react-icons/bs";
 import { RxActivityLog } from "react-icons/rx";
+import { IoMdClose } from "react-icons/io";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useState } from "react";
 
 import { Id, Task, TaskActivity } from "../constants/types";
-import { useState } from "react";
 import { taskActivities } from "../constants/data";
 import TaskActivityItem from "./TaskActivityItem";
 
@@ -20,6 +23,8 @@ const EditTaskModal = (props: Props) => {
   const { task, open, handleClose, editTaskTitle } = props;
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [isEditTaskTitle, setIsEditTaskTitle] = useState(false);
+  const [taskDescription, setTaskDescription] = useState(task.description);
+  const [isEditTaskDescription, setIsEditTaskDescription] = useState(false);
 
   const handleEditTaskTitle = () => {
     if (editTaskTitle) editTaskTitle(task.id, taskTitle);
@@ -59,31 +64,65 @@ const EditTaskModal = (props: Props) => {
               />
             </div>
           )}
+          <button
+            className="absolute right-4 p-1 rounded-md hover:bg-dark-1"
+            onClick={handleClose}
+          >
+            <IoMdClose />
+          </button>
         </DialogTitle>
         <DialogContent className="flex flex-col gap-4">
           {/* Description */}
           <div>
-            <h3 className="flex items-center text-lg font-semibold gap-4">
-              <BsTextParagraph />
-              Description
-            </h3>
-            
+            <div className="flex justify-between">
+              <h3 className="flex items-center text-lg font-semibold gap-4">
+                <BsTextParagraph />
+                Description
+              </h3>
+              <button
+                className="btn-primary bg-gray-300 text-black"
+                onClick={() => setIsEditTaskDescription(true)}
+              >
+                Edit
+              </button>
+            </div>
+
             {/* Extend: create tiptap for rich text format  */}
             <div className="mt-4">
-              <p>{task.description}</p>
-              {/* {isEditTaskTitle && (
-            <div>
-              <TextareaAutosize
-                //   ref={inputRef}
-                className="w-full p-2 rounded-md resize-none"
-                placeholder="Add a description for this card"
-                value={task.description}
-                autoFocus
-                onBlur={() => setIsEditTaskTitle(false)}
-                //   onChange={(e) => setTaskTitle(e.target.value)}
-              />
-            </div>
-          )} */}
+              {/* <p>{taskDescription}</p> */}
+              {isEditTaskDescription ? (
+                <div>
+                  <ReactQuill
+                    theme="snow"
+                    value={taskDescription}
+                    onChange={setTaskDescription}
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      className="btn-primary"
+                      onClick={() => {
+                        setIsEditTaskDescription(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="btn-secondary"
+                      onClick={() => setIsEditTaskDescription(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {/* <p>{taskDescription}</p> */}
+                  <div
+                    className="formatted-css"
+                    dangerouslySetInnerHTML={{ __html: taskDescription }}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
