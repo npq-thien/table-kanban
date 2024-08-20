@@ -2,11 +2,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useRef, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
+import { BsThreeDots } from "react-icons/bs";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 
 import { Column, Id, Task } from "../constants/types";
-import { TextareaAutosize } from "@mui/material";
+import { Menu, MenuItem, TextareaAutosize } from "@mui/material";
 import TaskCard from "./TaskCard";
 
 type Props = {
@@ -38,6 +38,9 @@ const ColumnContainer = (props: Props) => {
     return tasks.map((task) => task.id);
   }, [tasks]);
 
+  const [openMenu, setOpenMenu] = useState(false);
+  const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
+
   const {
     setNodeRef,
     attributes,
@@ -58,6 +61,11 @@ const ColumnContainer = (props: Props) => {
     transform: CSS.Transform.toString(transform),
   };
 
+  const handleCloseMenu = () => {
+    setOpenMenu(false);
+  };
+
+  // CRUD Task
   const handleAddTask = () => {
     if (taskTitle.trim()) {
       createTask(column.id, taskTitle);
@@ -108,6 +116,26 @@ const ColumnContainer = (props: Props) => {
       style={style}
       className="w-[250px] h-[400px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
+      <Menu
+        open={openMenu}
+        onClose={handleCloseMenu}
+        anchorEl={anchorMenu}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <div className="border-b border-1 border-b-black mb-2">
+          <p className="text-center">Column actions</p>
+        </div>
+        <div>
+          <MenuItem>Copy column</MenuItem>
+          <MenuItem>Move all cards in this list</MenuItem>
+          <MenuItem onClick={() => deleteColumn(column.id)}>
+            <p className="text-red-500 font-semibold">Delete column</p>
+          </MenuItem>
+        </div>
+      </Menu>
       <header
         {...listeners}
         {...attributes}
@@ -136,8 +164,15 @@ const ColumnContainer = (props: Props) => {
           )}
           {/* <p className="rounded-full bg-light-2 px-2">{tasks.length}</p> */}
         </div>
-        <button className="p-1 rounded-md hover:bg-light-3">
-          <MdDeleteForever onClick={() => deleteColumn(column.id)} />
+        <button
+          className="p-1 rounded-md hover:bg-light-3"
+          // onClick={() => deleteColumn(column.id)}
+          onClick={(e) => {
+            setAnchorMenu(e.currentTarget);
+            setOpenMenu(true);
+          }}
+        >
+          <BsThreeDots />
         </button>
       </header>
       <div className="flex flex-col gap-2 overflow-auto">
@@ -182,7 +217,7 @@ const ColumnContainer = (props: Props) => {
         <button
           className="flex-center py-1 gap-2 btn-primary w-full"
           onClick={() => {
-            // Wait for the input field rendered
+            // Wait for the input field rendered then focus it
             setTimeout(() => {
               inputRef.current?.focus();
             }, 0);

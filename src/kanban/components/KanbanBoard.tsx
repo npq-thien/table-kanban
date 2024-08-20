@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { generateId } from "../utils/helper";
 import { Column, Id, Task } from "../constants/types";
@@ -82,50 +83,16 @@ const KanbanBoard = () => {
     }
   };
 
-  // const onDragEnd = (e: DragEndEvent) => {
-  //   setActiveColumn(null);
-  //   setActiveTask(null);
-
-  //   const { active, over } = e;
-  //   if (!over) return;
-  //   const activeColumnId = active.id;
-  //   const overColumnId = over.id;
-  //   if (activeColumnId === overColumnId) return;
-  //   // console.log("hi", active.data.current?.type, over.data.current?.type);
-
-  //   setColumns((columns) => {
-  //     const activeColumnIndex = columns.findIndex(
-  //       (col) => col.id === activeColumnId
-  //     );
-  //     const overColumnIndex = columns.findIndex(
-  //       (col) => col.id === overColumnId
-  //     );
-
-  //     // console.log(activeColumnIndex, overColumnIndex);
-  //     return arrayMove(columns, activeColumnIndex, overColumnIndex);
-  //   });
-  // };
-
-  // This function just use to reorder columns
   const onDragEnd = (e: DragEndEvent) => {
-    // console.log("Drag ended:", e);
     setActiveColumn(null);
     setActiveTask(null);
 
     const { active, over } = e;
     if (!over) return;
-
     const activeColumnId = active.id;
     const overColumnId = over.id;
-
-    if (
-      active.data.current?.type !== "Column" ||
-      over.data.current?.type !== "Column"
-    )
-      return;
-    console.log("Drag ended:", active, over);
-    console.log("Active col ID:", activeColumnId, "Over ID:", overColumnId);
     if (activeColumnId === overColumnId) return;
+    // console.log("hi", active.data.current?.type, over.data.current?.type);
 
     if (
       active.data.current?.type === "Column" &&
@@ -139,11 +106,51 @@ const KanbanBoard = () => {
           (col) => col.id === overColumnId
         );
 
-        console.log("Reordering columns:", activeColumnIndex, overColumnIndex);
+        // console.log(activeColumnIndex, overColumnIndex);
         return arrayMove(columns, activeColumnIndex, overColumnIndex);
       });
     }
   };
+
+  // This function just use to reorder columns
+  // const onDragEnd = (e: DragEndEvent) => {
+  //   // console.log("Drag ended:", e);
+  //   setActiveColumn(null);
+  //   setActiveTask(null);
+
+  //   const { active, over } = e;
+  //   if (!over) return;
+
+  //   const activeColumnId = active.id;
+  //   const overColumnId = over.id;
+
+  //   if (
+  //     active.data.current?.type !== "Column" ||
+  //     over.data.current?.type !== "Column"
+  //   )
+  //     return;
+
+  //   // console.log("Drag ended:", active, over);
+  //   // console.log("Active col ID:", activeColumnId, "Over ID:", overColumnId);
+  //   if (activeColumnId === overColumnId) return;
+
+  //   if (
+  //     active.data.current?.type === "Column" &&
+  //     over.data.current?.type === "Column"
+  //   ) {
+  //     setColumns((columns) => {
+  //       const activeColumnIndex = columns.findIndex(
+  //         (col) => col.id === activeColumnId
+  //       );
+  //       const overColumnIndex = columns.findIndex(
+  //         (col) => col.id === overColumnId
+  //       );
+
+  //       console.log("Reordering columns:", activeColumnIndex, overColumnIndex);
+  //       return arrayMove(columns, activeColumnIndex, overColumnIndex);
+  //     });
+  //   }
+  // };
 
   const onDragOver = (e: DragOverEvent) => {
     const { active, over } = e;
@@ -210,7 +217,20 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
+    <div className="overflow-x-auto min-h-screen w-full bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
+      <nav className="w-full bg-gray-300 p-4 flex items-center gap-4 border-b-2 border-black">
+        <Link to={"/table"}>
+          <p className="h3-bold hover:text-green-600 animation-scale">
+            Flowbite Table
+          </p>
+        </Link>
+        <span>|</span>
+        <Link to={"/kanban"}>
+          <p className="h3-bold hover:text-orange-500 animation-scale">
+            Kanban
+          </p>
+        </Link>
+      </nav>
       <div className="flex gap-2 p-4">
         <DndContext
           sensors={sensors}
@@ -270,7 +290,7 @@ const KanbanBoard = () => {
             <div className="w-[250px] bg-cream rounded-lg p-2">
               <input
                 autoFocus
-                className="w-full rounded-md p-1 focus:border-orange-500 border-2"
+                className="w-full rounded-md p-1 border-2"
                 type="text"
                 placeholder="Enter column name"
                 onChange={(e) => setNewColumnTitle(e.target.value)}

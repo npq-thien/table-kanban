@@ -12,3 +12,11 @@ export type Task = {
   description: string;
   // add member, create Member type
 };
+
+export type TaskActivity = {
+  id: Id;
+  taskId: Id;
+  user: string;
+  date: Date;
+  content: string;
+};
