@@ -8,8 +8,9 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 
 import { Id, Task, TaskActivity } from "../constants/types";
-import { taskActivities } from "../constants/data";
+import { taskActivities as initialTaskActivities } from "../constants/data";
 import TaskActivityItem from "./TaskActivityItem";
+import { generateUniqueId } from "../utils/helper";
 
 type Props = {
   task: Task;
@@ -21,6 +22,10 @@ type Props = {
 
 const EditTaskModal = (props: Props) => {
   const { task, open, handleClose, editTaskTitle } = props;
+  const [taskActivities, setTaskActivities] = useState(initialTaskActivities);
+  const [isAddingTaskActivity, setIsAddingTaskActivity] = useState(false);
+  const [activityContent, setActivityContent] = useState("");
+
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [isEditTaskTitle, setIsEditTaskTitle] = useState(false);
   const [taskDescription, setTaskDescription] = useState(task.description);
@@ -31,6 +36,18 @@ const EditTaskModal = (props: Props) => {
     if (taskTitle.trim() !== "") {
       setIsEditTaskTitle(false);
     }
+  };
+
+  const handleAddingTaskActivity = () => {
+    const newTaskActivity: TaskActivity = {
+      id: generateUniqueId("activity"),
+      taskId: task.id,
+      user: "Thien Nguyen", // current user
+      date: new Date(),
+      content: activityContent,
+    };
+
+    setTaskActivities([newTaskActivity, ...taskActivities]);
   };
 
   return (
@@ -87,7 +104,6 @@ const EditTaskModal = (props: Props) => {
               </button>
             </div>
 
-            {/* Extend: create tiptap for rich text format  */}
             <div className="mt-4">
               {/* <p>{taskDescription}</p> */}
               {isEditTaskDescription ? (
@@ -126,13 +142,53 @@ const EditTaskModal = (props: Props) => {
             </div>
           </div>
 
-          {/* Activies */}
+          {/* Activities (comments) */}
           <div>
             <h3 className="flex items-center text-lg font-semibold gap-4 mb-4">
               <RxActivityLog />
               Activity
             </h3>
-            <div className="flex flex-col gap-4">
+            {/* Write new comment */}
+            <div className="mt-4">
+              {isAddingTaskActivity ? (
+                <div>
+                  <ReactQuill
+                    theme="snow"
+                    value={activityContent}
+                    onChange={setActivityContent}
+                  />
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      className="btn-primary"
+                      onClick={() => {
+                        handleAddingTaskActivity();
+                        setActivityContent("");
+                        setIsAddingTaskActivity(false);
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="btn-secondary"
+                      onClick={() => setIsAddingTaskActivity(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <input
+                    className="w-full p-1 rounded-md hover:bg-slate-200 "
+                    placeholder="Add a description for this card"
+                    onClick={() => setIsAddingTaskActivity(true)}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Render exist activities */}
+            <div className="flex flex-col gap-4 mt-4">
               {taskActivities.map(
                 (item: TaskActivity) =>
                   item.taskId === task.id && (

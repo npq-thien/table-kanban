@@ -22,13 +22,11 @@ const TaskActivityItem = (props: TaskActivityProps) => {
           </p>
         </div>
 
-        <div>
-          <input
-            disabled
-            className="w-full p-2 rounded-lg"
-            type="text"
-            value={taskActivity.content}
-          />
+        <div
+          dangerouslySetInnerHTML={{ __html: taskActivity.content }}
+          className="formatted-css w-full bg-white p-2 border border-black rounded-lg"
+        >
+          {/* {taskActivity.content} */}
         </div>
       </div>
     </div>
