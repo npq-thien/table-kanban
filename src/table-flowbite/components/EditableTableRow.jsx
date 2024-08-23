@@ -20,7 +20,6 @@ const EditableTableRow = ({
     getValues,
     formState: { errors },
   } = useForm({ values: row });
-//   console.log("data", getValues().name);
 
   const onSubmit = (data) => {
     onSave(data);

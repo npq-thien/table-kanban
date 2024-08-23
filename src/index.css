@@ -61,7 +61,7 @@
   }
 
   .btn-secondary {
-    @apply border border-blue-500 text-black p-2 rounded-lg hover:bg-gray-200;
+    @apply border border-blue-500 text-black p-2 rounded-lg hover:bg-light-1;
   }
 
   .item-dropdown {
