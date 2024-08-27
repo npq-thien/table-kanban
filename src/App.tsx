@@ -20,14 +20,15 @@ function Home() {
 }
 
 function App() {
+
   return (
     <div>
       <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/table" element={<TableData />} />
-          <Route path="/kanban" element={<KanbanBoard />} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/table" element={<TableData />} />
+            <Route path="/kanban" element={<KanbanBoard />} />
+          </Routes>
       </div>
     </div>
   );

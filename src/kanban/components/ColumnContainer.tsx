@@ -7,6 +7,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 
 import { Column, Id, Task } from "../constants/types";
 import {
+  Alert,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,6 +15,8 @@ import {
   DialogTitle,
   Menu,
   MenuItem,
+  Snackbar,
+  SnackbarContent,
   TextareaAutosize,
 } from "@mui/material";
 import TaskCard from "./TaskCard";
@@ -50,6 +53,7 @@ const ColumnContainer = (props: Props) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
   const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
+  // const [openToast, setOpenToast] = useState(false);
 
   const {
     setNodeRef,
@@ -96,7 +100,10 @@ const ColumnContainer = (props: Props) => {
 
   const handleCloseDeleteColumn = () => {
     setOpenDeleteColumn(false);
+    setOpenMenu(false);
   };
+
+
 
   // Create the old UI at the position of dragging table
   if (isDragging) {
@@ -135,6 +142,14 @@ const ColumnContainer = (props: Props) => {
       style={style}
       className="w-[250px] h-[400px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
+      {/* <Snackbar
+        open={openToast}
+        onClose={handleCloseToast}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success">Delete column successfully!</Alert>
+      </Snackbar> */}
       <Dialog open={openDeleteColumn}>
         <DialogTitle>Confirm deletion</DialogTitle>
         <DialogContent>
@@ -144,13 +159,17 @@ const ColumnContainer = (props: Props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <button className="btn-primary" onClick={handleCloseDeleteColumn}>
-            Disagree
+          <button
+            className="btn-secondary border-gray-500"
+            onClick={handleCloseDeleteColumn}
+          >
+            Cancel
           </button>
           <button
-            className="btn-primary"
-            onClick={() => deleteColumn(column.id)}
-            autoFocus
+            className="btn-primary bg-red-500"
+            onClick={() => {
+              deleteColumn(column.id);
+            }}
           >
             Agree
           </button>

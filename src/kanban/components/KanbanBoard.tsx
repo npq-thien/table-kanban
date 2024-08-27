@@ -21,6 +21,7 @@ import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { Alert, Dialog, Snackbar } from "@mui/material";
 
 const KanbanBoard = () => {
   const [columns, setColumns] = useState<Column[]>(columnData);
@@ -30,7 +31,7 @@ const KanbanBoard = () => {
   const [isAddingNewColumn, setIsAddingNewColumn] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
   // const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
-
+  const [openToast, setOpenToast] = useState(false);
 
   const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
 
@@ -218,6 +219,9 @@ const KanbanBoard = () => {
     );
   };
 
+  const handleCloseToast = () => {
+    setOpenToast(false);
+  };
 
   return (
     <div className="overflow-x-auto min-h-screen w-full bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
@@ -235,7 +239,14 @@ const KanbanBoard = () => {
         </Link>
       </nav>
       <div className="flex gap-2 p-4">
-
+        <Snackbar
+          open={openToast}
+          onClose={handleCloseToast}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert severity="success">Delete column successfully!</Alert>
+        </Snackbar>
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}
