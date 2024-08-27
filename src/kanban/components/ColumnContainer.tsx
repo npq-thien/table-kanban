@@ -85,7 +85,7 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] h-[400px] over bg-cream rounded-lg p-2 border-2 border-blue-400"
+        className="w-[250px] h-[400px] over bg-slate-50 rounded-lg p-2 border-2 border-blue-400"
       >
         <header className="flex flex-col gap-4 opacity-25">
           {/* <div className="flex-between gap-2 font-bold">
