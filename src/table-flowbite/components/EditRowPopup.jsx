@@ -1,5 +1,4 @@
 import { Button, Label, Modal, Select, TextInput } from "flowbite-react";
-import React from "react";
 import { useForm } from "react-hook-form";
 
 const EditRowPopup = ({ open, handleClose, data, handleSave }) => {

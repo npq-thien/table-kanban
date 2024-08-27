@@ -8,13 +8,13 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 
 import { Id, Task, TaskActivity } from "../constants/types";
-import { taskActivities as initialTaskActivities } from "../constants/data";
 import TaskActivityItem from "./TaskActivityItem";
-import { generateUniqueId } from "../utils/helper";
 import { FaArchive, FaArrowRight, FaCopy, FaUser } from "react-icons/fa";
 
 type Props = {
   task: Task;
+  taskActivities: TaskActivity[];
+  addTaskActivity: (activityContent: string) => void;
 
   open: boolean;
   handleClose: () => void;
@@ -56,8 +56,8 @@ const actions = [
 ];
 
 const EditTaskModal = (props: Props) => {
-  const { task, open, handleClose, editTaskTitle } = props;
-  const [taskActivities, setTaskActivities] = useState(initialTaskActivities);
+  const { task, taskActivities, addTaskActivity, open, handleClose, editTaskTitle } = props;
+  // const [taskActivities, setTaskActivities] = useState(initialTaskActivities);
   const [isAddingTaskActivity, setIsAddingTaskActivity] = useState(false);
   const [activityContent, setActivityContent] = useState("");
 
@@ -74,36 +74,37 @@ const EditTaskModal = (props: Props) => {
   };
 
   const handleAddingTaskActivity = () => {
-    const newTaskActivity: TaskActivity = {
-      id: generateUniqueId("activity"),
-      taskId: task.id,
-      user: "Thien Nguyen", // current user
-      date: new Date(),
-      content: activityContent,
-    };
+    // const newTaskActivity: TaskActivity = {
+    //   id: generateUniqueId("activity"),
+    //   taskId: task.id,
+    //   user: "Thien Nguyen", // current user
+    //   date: new Date(),
+    //   content: activityContent,
+    // };
 
-    setTaskActivities([newTaskActivity, ...taskActivities]);
+    // setTaskActivities([newTaskActivity, ...taskActivities]);
+    addTaskActivity(activityContent)
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}>
       <div className="bg-slate-100">
-        <DialogTitle className="flex items-center gap-4">
+        <DialogTitle className="flex items-center gap-4 border-b-2">
           <MdOutlineSubtitles />
           {!isEditTaskTitle && (
             <h2
-              className="text-2xl font-semibold p-1"
+              className="text-2xl font-semibold p-1 w-full"
               onClick={() => setIsEditTaskTitle(true)}
             >
               {task.title}
             </h2>
           )}
           {isEditTaskTitle && (
-            <div>
+            <div className="w-full mr-8">
               <input
                 autoFocus
                 className="text-2xl font-semibold w-full p-1 px-2 rounded-md"
-                placeholder="Add a description for this card"
+                placeholder="Add a description"
                 value={taskTitle}
                 //    TODO: handle empty case
                 onBlur={handleEditTaskTitle}
@@ -123,7 +124,7 @@ const EditTaskModal = (props: Props) => {
             <IoMdClose />
           </button>
         </DialogTitle>
-        <DialogContent className="grid grid-cols-4 w-full">
+        <DialogContent className="grid grid-cols-4 w-full mt-4">
           <div className="flex flex-col gap-4 col-span-3">
             {/* Description */}
             <div className="flex justify-between">
@@ -211,7 +212,7 @@ const EditTaskModal = (props: Props) => {
                   <div>
                     <input
                       className="w-full p-1 rounded-md hover:bg-slate-200 "
-                      placeholder="Add a description for this card"
+                      placeholder="Leave a comment for this task"
                       onClick={() => setIsAddingTaskActivity(true)}
                     />
                   </div>

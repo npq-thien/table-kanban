@@ -2,8 +2,9 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { generateId } from "../utils/helper";
-import { Column, Id, Task } from "../constants/types";
+import { Column, Id, Task, TaskActivity } from "../constants/types";
 import ColumnContainer from "./ColumnContainer";
+// import { taskActivities as initialTaskActivities } from "../constants/data";
 import { columnData, taskData } from "../constants/data";
 import {
   DndContext,
@@ -21,7 +22,7 @@ import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { Alert, Dialog, Snackbar } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 
 const KanbanBoard = () => {
   const [columns, setColumns] = useState<Column[]>(columnData);
@@ -30,7 +31,6 @@ const KanbanBoard = () => {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [isAddingNewColumn, setIsAddingNewColumn] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  // const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
   const [openToast, setOpenToast] = useState(false);
 
   const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
@@ -184,7 +184,7 @@ const KanbanBoard = () => {
     }
 
     const isOverAColumn = over.data.current?.type === "Column";
-    // Drop a task over a clumn
+    // Drop a task over a column
     if (isActiveTask && isOverAColumn) {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((task) => task.id === activeId);
@@ -209,6 +209,7 @@ const KanbanBoard = () => {
 
   const deleteTask = (taskId: Id) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
+    setOpenToast(true);
   };
 
   const editTaskTitle = (taskId: Id, newTaskTitle: string) => {
@@ -217,6 +218,11 @@ const KanbanBoard = () => {
         task.id === taskId ? { ...task, title: newTaskTitle } : task
       )
     );
+  };
+
+  // Show toast
+  const handleOpenToast = () => {
+    setOpenToast(true);
   };
 
   const handleCloseToast = () => {
@@ -243,9 +249,11 @@ const KanbanBoard = () => {
           open={openToast}
           onClose={handleCloseToast}
           autoHideDuration={3000}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          <Alert severity="success">Delete column successfully!</Alert>
+          <Alert variant="filled" severity="success">
+            Delete successfully!
+          </Alert>
         </Snackbar>
         <DndContext
           sensors={sensors}
@@ -262,6 +270,7 @@ const KanbanBoard = () => {
                     column={col}
                     deleteColumn={deleteColumn}
                     editColumnTitle={editColumnTitle}
+                    onShowToast={handleOpenToast}
                     tasks={tasks.filter((task) => task.columnId === col.id)}
                     createTask={createTask}
                     deleteTask={deleteTask}
@@ -279,6 +288,7 @@ const KanbanBoard = () => {
                   key={activeColumn.id}
                   column={activeColumn}
                   deleteColumn={deleteColumn}
+                  onShowToast={handleOpenToast}
                   editColumnTitle={editColumnTitle}
                   tasks={tasks.filter(
                     (task) => task.columnId === activeColumn.id

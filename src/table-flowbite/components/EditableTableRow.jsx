@@ -1,5 +1,5 @@
 import { Button, Checkbox, TableCell } from "flowbite-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete, MdSave } from "react-icons/md";

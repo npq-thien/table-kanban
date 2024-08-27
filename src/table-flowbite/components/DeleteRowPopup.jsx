@@ -1,5 +1,4 @@
 import { Button, Modal } from "flowbite-react";
-import React from "react";
 
 const DeleteRowPopup = ({ open, handleClose, data, handleDelete }) => {
   return (

@@ -38,9 +38,9 @@ export const taskData: Task[] = [
   },
   {
     id: generateUniqueId("task"),
-    columnId: "col-3",
+    columnId: "col-2",
     title:
-      "Artificial intelligence (AI) is technology that enables computers to simulate human intelligence.",
+      "Customize gradient button for login page",
     description: "",
   },
   // {

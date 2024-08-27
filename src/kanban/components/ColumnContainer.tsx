@@ -7,7 +7,6 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 
 import { Column, Id, Task } from "../constants/types";
 import {
-  Alert,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,8 +14,6 @@ import {
   DialogTitle,
   Menu,
   MenuItem,
-  Snackbar,
-  SnackbarContent,
   TextareaAutosize,
 } from "@mui/material";
 import TaskCard from "./TaskCard";
@@ -25,6 +22,7 @@ type Props = {
   column: Column;
   deleteColumn: (id: Id) => void;
   editColumnTitle: (id: Id, title: string) => void;
+  onShowToast: () => void;
 
   tasks: Task[];
   createTask: (columnId: Id, taskTitle: string) => void;
@@ -37,6 +35,7 @@ const ColumnContainer = (props: Props) => {
     column,
     deleteColumn,
     editColumnTitle,
+    onShowToast,
     tasks,
     createTask,
     editTaskTitle,
@@ -103,7 +102,12 @@ const ColumnContainer = (props: Props) => {
     setOpenMenu(false);
   };
 
-
+  const handleConfirmDeleteColumn = () => {
+    setOpenDeleteColumn(false);
+    setOpenMenu(false);
+    onShowToast();
+    deleteColumn(column.id);
+  };
 
   // Create the old UI at the position of dragging table
   if (isDragging) {
@@ -111,28 +115,8 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] h-[400px] over bg-slate-50 rounded-lg p-2 border-2 border-blue-400"
-      >
-        <header className="flex flex-col gap-4 opacity-25">
-          {/* <div className="flex-between gap-2 font-bold">
-            <header className="flex gap-2">
-              {column.title}
-              <p className="rounded-full bg-light-2 px-2">{tasks.length}</p>
-            </header>
-            <button>
-              <MdDeleteForever onClick={() => openDeleteColumn(column.id)} />
-            </button>
-          </div>
-          <div className="flex flex-col overflow-auto gap-2 rounded-xl">
-            <SortableContext items={taskIds}>
-              {tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
-              ))}
-            </SortableContext>
-          </div>
-          <button className="btn-primary w-full">Add a card</button> */}
-        </header>
-      </div>
+        className="w-[250px] h-[400px] max-h-[500px] over bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+      ></div>
     );
   }
 
@@ -140,7 +124,7 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] h-[400px] flex flex-col gap-4 bg-cream rounded-lg p-2"
+      className="w-[250px] h-[400px] max-h-[500px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
       {/* <Snackbar
         open={openToast}
@@ -167,9 +151,7 @@ const ColumnContainer = (props: Props) => {
           </button>
           <button
             className="btn-primary bg-red-500"
-            onClick={() => {
-              deleteColumn(column.id);
-            }}
+            onClick={handleConfirmDeleteColumn}
           >
             Agree
           </button>
