@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { generateId } from "../utils/helper";
@@ -29,6 +29,8 @@ const KanbanBoard = () => {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [isAddingNewColumn, setIsAddingNewColumn] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
+  // const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
+
 
   const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
 
@@ -216,6 +218,7 @@ const KanbanBoard = () => {
     );
   };
 
+
   return (
     <div className="overflow-x-auto min-h-screen w-full bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
       <nav className="w-full bg-gray-300 p-4 flex items-center gap-4 border-b-2 border-black">
@@ -232,6 +235,7 @@ const KanbanBoard = () => {
         </Link>
       </nav>
       <div className="flex gap-2 p-4">
+
         <DndContext
           sensors={sensors}
           onDragStart={onDragStart}

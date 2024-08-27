@@ -6,7 +6,16 @@ import { BsThreeDots } from "react-icons/bs";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 
 import { Column, Id, Task } from "../constants/types";
-import { Menu, MenuItem, TextareaAutosize } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Menu,
+  MenuItem,
+  TextareaAutosize,
+} from "@mui/material";
 import TaskCard from "./TaskCard";
 
 type Props = {
@@ -40,6 +49,7 @@ const ColumnContainer = (props: Props) => {
 
   const [openMenu, setOpenMenu] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
+  const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
 
   const {
     setNodeRef,
@@ -79,6 +89,15 @@ const ColumnContainer = (props: Props) => {
     // deleteTask(task.)
   };
 
+  // Confirm delete
+  const handleOpenDeleteColumn = () => {
+    setOpenDeleteColumn(true);
+  };
+
+  const handleCloseDeleteColumn = () => {
+    setOpenDeleteColumn(false);
+  };
+
   // Create the old UI at the position of dragging table
   if (isDragging) {
     return (
@@ -94,7 +113,7 @@ const ColumnContainer = (props: Props) => {
               <p className="rounded-full bg-light-2 px-2">{tasks.length}</p>
             </header>
             <button>
-              <MdDeleteForever onClick={() => deleteColumn(column.id)} />
+              <MdDeleteForever onClick={() => openDeleteColumn(column.id)} />
             </button>
           </div>
           <div className="flex flex-col overflow-auto gap-2 rounded-xl">
@@ -116,6 +135,27 @@ const ColumnContainer = (props: Props) => {
       style={style}
       className="w-[250px] h-[400px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
+      <Dialog open={openDeleteColumn}>
+        <DialogTitle>Confirm deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete column{" "}
+            <span className="text-red-500">{column.title}</span>?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button className="btn-primary" onClick={handleCloseDeleteColumn}>
+            Disagree
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => deleteColumn(column.id)}
+            autoFocus
+          >
+            Agree
+          </button>
+        </DialogActions>
+      </Dialog>
       <Menu
         open={openMenu}
         onClose={handleCloseMenu}
@@ -131,7 +171,7 @@ const ColumnContainer = (props: Props) => {
         <div>
           <MenuItem>Copy column</MenuItem>
           <MenuItem>Move all cards in this list</MenuItem>
-          <MenuItem onClick={() => deleteColumn(column.id)}>
+          <MenuItem onClick={handleOpenDeleteColumn}>
             <p className="text-red-500 font-semibold">Delete column</p>
           </MenuItem>
         </div>
@@ -166,7 +206,7 @@ const ColumnContainer = (props: Props) => {
         </div>
         <button
           className="p-1 rounded-md hover:bg-light-3"
-          // onClick={() => deleteColumn(column.id)}
+          // onClick={() => openDeleteColumn(column.id)}
           onClick={(e) => {
             setAnchorMenu(e.currentTarget);
             setOpenMenu(true);

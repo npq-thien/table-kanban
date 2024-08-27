@@ -256,7 +256,7 @@ const EditTaskModal = (props: Props) => {
                   {item.title}
                 </button>
               ))}
-            </div>
+              </div>
           </div>
         </DialogContent>
       </div>
