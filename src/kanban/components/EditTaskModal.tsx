@@ -76,7 +76,6 @@ const EditTaskModal = (props: Props) => {
 
   // Sync data from Board to Modal
   useEffect(() => {
-    // console.log('sync')
     setTaskTitle(task.title);
     setTaskDescription(task.description);
     setTaskActivities(initTaskActivities);

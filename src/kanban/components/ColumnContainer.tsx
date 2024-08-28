@@ -114,7 +114,7 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] max-h-[500px] bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+        className="w-[250px]  bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
       ></div>
     );
   }
@@ -123,7 +123,7 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] h-[400px] max-h-[500px] flex flex-col gap-4 bg-cream rounded-lg p-2"
+      className="w-[250px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
       <Dialog open={openDeleteColumn}>
         <DialogTitle>Confirm deletion</DialogTitle>
@@ -249,7 +249,7 @@ const ColumnContainer = (props: Props) => {
         </div>
       ) : (
         <button
-          className="flex-center py-1 gap-2 btn-primary w-full"
+          className="flex-center mt-auto py-1 gap-2 btn-primary w-full"
           onClick={() => {
             // Wait for the input field rendered then focus it
             setTimeout(() => {

@@ -71,7 +71,6 @@ const KanbanBoard = () => {
     setTaskActivities([newTaskActivity, ...taskActivities]);
   };
 
-
   //  Column
   const createNewColumn = (columnTitle: string) => {
     const newColumn: Column = {
@@ -196,7 +195,6 @@ const KanbanBoard = () => {
     const isActiveTask = active.data.current?.type === "Task";
     const isOverTask = over.data.current?.type === "Task";
 
-    // console.log("Drag task:", active, over);
     console.log("Active task ID:", activeId, "Over ID:", overId);
     if (!isActiveTask) return;
 
@@ -292,10 +290,9 @@ const KanbanBoard = () => {
           onDragEnd={onDragEnd}
           onDragOver={onDragOver}
         >
-          <div className="flex gap-4">
-            <SortableContext items={columnIds}>
+          <SortableContext items={columnIds}>
+            <div className="grid grid-cols-4 gap-4 auto-rows-fr h-full">
               {columns.map((col) => (
-                <div key={col.id}>
                   <ColumnContainer
                     key={col.id}
                     column={col}
@@ -309,10 +306,9 @@ const KanbanBoard = () => {
                     editTaskTitle={editTaskTitle}
                     taskActivities={taskActivities}
                   />
-                </div>
               ))}
-            </SortableContext>
-          </div>
+            </div>
+          </SortableContext>
 
           {createPortal(
             <DragOverlay>

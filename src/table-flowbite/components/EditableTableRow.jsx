@@ -17,7 +17,6 @@ const EditableTableRow = ({
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm({ values: row });
 
@@ -27,7 +26,6 @@ const EditableTableRow = ({
   };
 
   const handleDoubleClick = () => {
-    // console.log('run')
     setIsDisabled(false);
   };
 

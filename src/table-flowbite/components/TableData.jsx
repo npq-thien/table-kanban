@@ -67,9 +67,6 @@ const TableData = () => {
       currentPage * itemsPerPage
     );
     setPaginationRows(paginatedRow);
-
-    // console.log("newFiltered", newFilterRows);
-    // console.log("paginatedRow", paginatedRow);
   }, [rowData, currentPage, itemsPerPage, searchValue]);
 
   const handleSelectAllRows = (e) => {
@@ -133,12 +130,10 @@ const TableData = () => {
 
     setToastMessage("Deleted multiple rows succesfully.");
     setShowToast(true);
-    // console.log('delete multi', rowData.length, filteredRows.length)
   };
 
   // Edit row
   const handleEditRow = (row) => {
-    // console.log("select", row);
     setCurrentRowData(row);
     setOpenEdit(true);
   };
@@ -169,7 +164,6 @@ const TableData = () => {
       email: "",
       status: "",
     };
-    // console.log(newId, rowData.length);
     setRowData([newRow, ...rowData]);
     setFilteredRows([newRow, ...rowData]);
   };
@@ -196,7 +190,6 @@ const TableData = () => {
         else return direction === "asc" ? 1 : -1;
       });
       setRowData(sortedData);
-      // console.log("sorted", sortProps.column, direction, sortedData);
     }
   };
 
@@ -269,7 +262,6 @@ const TableData = () => {
               />
             </Table.HeadCell>
             {columns.map((item) => {
-              // console.log("asda", sortProps);
               return (
                 <TableHeadCell key={item.key}>
                   <div
