@@ -114,6 +114,7 @@ const KanbanBoard = () => {
     }
   };
 
+  // DND column
   const onDragEnd = (e: DragEndEvent) => {
     setActiveColumn(null);
     setActiveTask(null);
@@ -123,7 +124,6 @@ const KanbanBoard = () => {
     const activeColumnId = active.id;
     const overColumnId = over.id;
     if (activeColumnId === overColumnId) return;
-    // console.log("hi", active.data.current?.type, over.data.current?.type);
 
     if (
       active.data.current?.type === "Column" &&
@@ -137,51 +137,10 @@ const KanbanBoard = () => {
           (col) => col.id === overColumnId
         );
 
-        // console.log(activeColumnIndex, overColumnIndex);
         return arrayMove(columns, activeColumnIndex, overColumnIndex);
       });
     }
   };
-
-  // This function just use to reorder columns
-  // const onDragEnd = (e: DragEndEvent) => {
-  //   // console.log("Drag ended:", e);
-  //   setActiveColumn(null);
-  //   setActiveTask(null);
-
-  //   const { active, over } = e;
-  //   if (!over) return;
-
-  //   const activeColumnId = active.id;
-  //   const overColumnId = over.id;
-
-  //   if (
-  //     active.data.current?.type !== "Column" ||
-  //     over.data.current?.type !== "Column"
-  //   )
-  //     return;
-
-  //   // console.log("Drag ended:", active, over);
-  //   // console.log("Active col ID:", activeColumnId, "Over ID:", overColumnId);
-  //   if (activeColumnId === overColumnId) return;
-
-  //   if (
-  //     active.data.current?.type === "Column" &&
-  //     over.data.current?.type === "Column"
-  //   ) {
-  //     setColumns((columns) => {
-  //       const activeColumnIndex = columns.findIndex(
-  //         (col) => col.id === activeColumnId
-  //       );
-  //       const overColumnIndex = columns.findIndex(
-  //         (col) => col.id === overColumnId
-  //       );
-
-  //       console.log("Reordering columns:", activeColumnIndex, overColumnIndex);
-  //       return arrayMove(columns, activeColumnIndex, overColumnIndex);
-  //     });
-  //   }
-  // };
 
   const onDragOver = (e: DragOverEvent) => {
     const { active, over } = e;
@@ -210,8 +169,8 @@ const KanbanBoard = () => {
       });
     }
 
-    const isOverAColumn = over.data.current?.type === "Column";
     // Drop a task over a column
+    const isOverAColumn = over.data.current?.type === "Column";
     if (isActiveTask && isOverAColumn) {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((task) => task.id === activeId);
@@ -256,8 +215,6 @@ const KanbanBoard = () => {
     setOpenToast(false);
   };
 
-  // console.log('change activity', taskActivities)
-
   return (
     <div className="overflow-x-auto min-h-screen w-full bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
       <nav className="w-full bg-gray-300 p-4 flex items-center gap-4 border-b-2 border-black">
@@ -291,21 +248,21 @@ const KanbanBoard = () => {
           onDragOver={onDragOver}
         >
           <SortableContext items={columnIds}>
-            <div className="grid grid-cols-4 gap-4 auto-rows-fr h-full">
+            <div className="flex gap-4">
               {columns.map((col) => (
-                  <ColumnContainer
-                    key={col.id}
-                    column={col}
-                    deleteColumn={deleteColumn}
-                    editColumnTitle={editColumnTitle}
-                    onShowToast={handleOpenToast}
-                    tasks={tasks.filter((task) => task.columnId === col.id)}
-                    selectTask={selectTask}
-                    createTask={createTask}
-                    deleteTask={deleteTask}
-                    editTaskTitle={editTaskTitle}
-                    taskActivities={taskActivities}
-                  />
+                <ColumnContainer
+                  key={col.id}
+                  column={col}
+                  deleteColumn={deleteColumn}
+                  editColumnTitle={editColumnTitle}
+                  onShowToast={handleOpenToast}
+                  tasks={tasks.filter((task) => task.columnId === col.id)}
+                  selectTask={selectTask}
+                  createTask={createTask}
+                  deleteTask={deleteTask}
+                  editTaskTitle={editTaskTitle}
+                  taskActivities={taskActivities}
+                />
               ))}
             </div>
           </SortableContext>

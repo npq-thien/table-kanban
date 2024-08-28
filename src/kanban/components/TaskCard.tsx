@@ -96,7 +96,7 @@ const TaskCard = (props: Props) => {
         {...attributes}
         {...listeners}
         key={task.id}
-        className="relative overflow-y-auto p-2 rounded-xl bg-white break-words border-2 hover:border-blue-400 overflow-hidden group"
+        className="relative overflow-y-auto p-2 rounded-xl bg-white break-words border-2 hover:border-blue-400 overflow-hidden group cursor-grab"
         onClick={() => selectTask(task)}
       >
         <button

@@ -53,11 +53,9 @@ const ColumnContainer = (props: Props) => {
     return tasks.map((task) => task.id);
   }, [tasks]);
 
-
   const [openMenu, setOpenMenu] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
   const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
-
   const {
     setNodeRef,
     attributes,
@@ -114,8 +112,9 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px]  bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
-      ></div>
+        className="w-[250px] min-h-[200px]  overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+      >
+      </div>
     );
   }
 
@@ -123,31 +122,8 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] flex flex-col gap-4 bg-cream rounded-lg p-2"
+      className="w-[250px] min-h-[200px] h-full overflow-y-auto flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
-      <Dialog open={openDeleteColumn}>
-        <DialogTitle>Confirm deletion</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete column{" "}
-            <span className="text-red-500">{column.title}</span>?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <button
-            className="btn-secondary border-gray-500"
-            onClick={handleCloseDeleteColumn}
-          >
-            Cancel
-          </button>
-          <button
-            className="btn-primary bg-red-500"
-            onClick={handleConfirmDeleteColumn}
-          >
-            Agree
-          </button>
-        </DialogActions>
-      </Dialog>
       <Menu
         open={openMenu}
         onClose={handleCloseMenu}
@@ -194,7 +170,6 @@ const ColumnContainer = (props: Props) => {
               }}
             />
           )}
-          {/* <p className="rounded-full bg-light-2 px-2">{tasks.length}</p> */}
         </div>
         <button
           className="p-1 rounded-md hover:bg-light-3"
@@ -249,7 +224,7 @@ const ColumnContainer = (props: Props) => {
         </div>
       ) : (
         <button
-          className="flex-center mt-auto py-1 gap-2 btn-primary w-full"
+          className="flex-center py-1 gap-2 btn-primary w-full"
           onClick={() => {
             // Wait for the input field rendered then focus it
             setTimeout(() => {
@@ -262,6 +237,29 @@ const ColumnContainer = (props: Props) => {
           Add a card
         </button>
       )}
+      <Dialog open={openDeleteColumn}>
+        <DialogTitle>Confirm deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete column{" "}
+            <span className="text-red-500">{column.title}</span>?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <button
+            className="btn-secondary border-gray-500"
+            onClick={handleCloseDeleteColumn}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn-primary bg-red-500"
+            onClick={handleConfirmDeleteColumn}
+          >
+            Agree
+          </button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
