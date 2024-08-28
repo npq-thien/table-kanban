@@ -75,7 +75,7 @@ const TaskCard = (props: Props) => {
         {...attributes}
         {...listeners}
         key={task.id}
-        className="relative p-2 rounded-xl bg-white break-words opacity-25 overflow-hidden border-2 border-blue-400"
+        className="relative overflow-y-auto p-2 rounded-xl bg-white break-words opacity-25 overflow-hidden border-2 border-blue-400"
       >
         {task.title}
         {activityByTask.length > 0 && (
@@ -114,11 +114,6 @@ const TaskCard = (props: Props) => {
             <p className="text-tiny">{activityByTask.length}</p>
           </div>
         )}
-        {/* <div className="flex items-center gap-1">
-            <IoChatbubbleEllipsesOutline />
-            <p className="text-tiny">{activityByTask.length}</p>
-          </div> */}
-
       </div>
       <Dialog open={openDeleteTask} onClose={handleCloseDeleteTask}>
         <DialogTitle>Confirm deletion</DialogTitle>

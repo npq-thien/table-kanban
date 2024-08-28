@@ -30,7 +30,7 @@ type Props = {
   deleteTask?: (taskId: Id) => void;
   editTaskTitle?: (taskId: Id, newTaskTitle: string) => void;
 
-  taskActivities?: TaskActivity[];
+  taskActivities: TaskActivity[];
 };
 
 const ColumnContainer = (props: Props) => {
@@ -114,7 +114,7 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] h-[400px] max-h-[500px] over bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+        className="w-[250px] max-h-[500px] bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
       ></div>
     );
   }

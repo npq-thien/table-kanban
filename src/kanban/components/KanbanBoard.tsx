@@ -328,6 +328,7 @@ const KanbanBoard = () => {
                     (task) => task.columnId === activeColumn.id
                   )}
                   createTask={createTask}
+                  taskActivities={taskActivities}
                 />
               )}
 
