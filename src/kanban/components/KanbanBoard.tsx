@@ -335,6 +335,7 @@ const KanbanBoard = () => {
                 <TaskCard
                   selectTask={selectTask}
                   task={activeTask}
+                  taskActivities={taskActivities}
                 />
               )}
             </DragOverlay>,

@@ -75,9 +75,15 @@ const TaskCard = (props: Props) => {
         {...attributes}
         {...listeners}
         key={task.id}
-        className="relative max-h-20 p-2 rounded-xl bg-white break-words opacity-25 overflow-hidden border-2 border-blue-400"
+        className="relative p-2 rounded-xl bg-white break-words opacity-25 overflow-hidden border-2 border-blue-400"
       >
         {task.title}
+        {activityByTask.length > 0 && (
+          <div className="flex items-center gap-1">
+            <IoChatbubbleEllipsesOutline />
+            <p className="text-tiny">{activityByTask.length}</p>
+          </div>
+        )}
       </div>
     );
   }
@@ -90,7 +96,7 @@ const TaskCard = (props: Props) => {
         {...attributes}
         {...listeners}
         key={task.id}
-        className="relative max-h-20 overflow-y-auto p-2 rounded-xl bg-white break-words border-2 hover:border-blue-400 overflow-hidden group"
+        className="relative overflow-y-auto p-2 rounded-xl bg-white break-words border-2 hover:border-blue-400 overflow-hidden group"
         onClick={() => selectTask(task)}
       >
         <button
@@ -101,13 +107,18 @@ const TaskCard = (props: Props) => {
           <MdDeleteForever />
         </button>
         <p>{task.title}</p>
-        
+
         {activityByTask.length > 0 && (
           <div className="flex items-center gap-1">
             <IoChatbubbleEllipsesOutline />
             <p className="text-tiny">{activityByTask.length}</p>
           </div>
         )}
+        {/* <div className="flex items-center gap-1">
+            <IoChatbubbleEllipsesOutline />
+            <p className="text-tiny">{activityByTask.length}</p>
+          </div> */}
+
       </div>
       <Dialog open={openDeleteTask} onClose={handleCloseDeleteTask}>
         <DialogTitle>Confirm deletion</DialogTitle>

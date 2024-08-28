@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Input } from "@mui/material";
 import { MdOutlineSubtitles } from "react-icons/md";
 import { BsFillCalendar2DateFill, BsTextParagraph } from "react-icons/bs";
 import { RxActivityLog } from "react-icons/rx";
@@ -14,11 +14,11 @@ import { FaArchive, FaArrowRight, FaCopy, FaUser } from "react-icons/fa";
 type Props = {
   task: Task;
   addTaskActivity: (activityContent: string) => void;
-  
+
   open: boolean;
   handleClose: () => void;
   editTaskTitle?: (id: Id, title: string) => void;
-  
+
   taskActivities: TaskActivity[];
 };
 
@@ -65,7 +65,7 @@ const EditTaskModal = (props: Props) => {
     handleClose,
     editTaskTitle,
   } = props;
-  const [taskActivities, setTaskActivities] = useState(initTaskActivities)
+  const [taskActivities, setTaskActivities] = useState(initTaskActivities);
   const [isAddingTaskActivity, setIsAddingTaskActivity] = useState(false);
   const [activityContent, setActivityContent] = useState("");
 
@@ -74,12 +74,13 @@ const EditTaskModal = (props: Props) => {
   const [taskDescription, setTaskDescription] = useState(task.description);
   const [isEditTaskDescription, setIsEditTaskDescription] = useState(false);
 
-
+  // Sync data from Board to Modal
   useEffect(() => {
     // console.log('sync')
     setTaskTitle(task.title);
-    setTaskActivities(initTaskActivities)
-  }, [task.title, initTaskActivities]);
+    setTaskDescription(task.description);
+    setTaskActivities(initTaskActivities);
+  }, [task.title, task.description, initTaskActivities]);
 
   const handleEditTaskTitle = () => {
     if (editTaskTitle) editTaskTitle(task.id, taskTitle);
@@ -92,7 +93,6 @@ const EditTaskModal = (props: Props) => {
   const handleAddingTaskActivity = () => {
     addTaskActivity(activityContent);
   };
-
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}>
@@ -107,20 +107,20 @@ const EditTaskModal = (props: Props) => {
               {task.title}
             </h2>
           ) : (
-              <input
-                autoFocus
-                className="text-2xl font-semibold w-full p-1 px-2 rounded-md mr-8"
-                placeholder="Add a description"
-                defaultValue={taskTitle}
-                //    TODO: handle empty case
-                onBlur={handleEditTaskTitle}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleEditTaskTitle();
-                  }
-                }}
-                onChange={(e) => setTaskTitle(e.target.value)}
-              />
+            <input
+              autoFocus
+              className="text-2xl font-semibold w-full p-1 px-2 rounded-md mr-8"
+              placeholder="Add a description"
+              defaultValue={taskTitle}
+              //    TODO: handle empty case
+              onBlur={handleEditTaskTitle}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleEditTaskTitle();
+                }
+              }}
+              onChange={(e) => setTaskTitle(e.target.value)}
+            />
           )}
           <button
             className="absolute right-4 p-1 rounded-md hover:bg-dark-1"
@@ -145,7 +145,6 @@ const EditTaskModal = (props: Props) => {
               </button>
             </div>
 
-            {/* <p>{taskDescription}</p> */}
             {isEditTaskDescription ? (
               <div>
                 <ReactQuill
@@ -171,12 +170,10 @@ const EditTaskModal = (props: Props) => {
                 </div>
               </div>
             ) : (
-              <div>
-                <div
-                  className="formatted-css bg-white rounded-xl p-2"
-                  dangerouslySetInnerHTML={{ __html: taskDescription }}
-                />
-              </div>
+              <div
+                className="formatted-css bg-white rounded-xl p-2"
+                dangerouslySetInnerHTML={{ __html: taskDescription }}
+              />
             )}
 
             {/* Activities (comments) */}
@@ -214,13 +211,11 @@ const EditTaskModal = (props: Props) => {
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <input
-                      className="w-full p-1 rounded-md hover:bg-slate-200 "
-                      placeholder="Leave a comment for this task"
-                      onClick={() => setIsAddingTaskActivity(true)}
-                    />
-                  </div>
+                  <input
+                    className="w-full p-1 rounded-md hover:bg-slate-200 "
+                    placeholder="Leave a comment for this task"
+                    onClick={() => setIsAddingTaskActivity(true)}
+                  />
                 )}
               </div>
 

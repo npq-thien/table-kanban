@@ -26,38 +26,31 @@ export const taskData: Task[] = [
   {
     id: "task-2",
     columnId: "col-1",
-    title: "ahihi task",
+    title: "Learn Spring boot on Youtube",
     description: "",
   },
   {
     id: "task-3",
     columnId: "col-3",
     title:
-      "Artificial intelligence (AI) is technology that enables computers to simulate human intelligence.",
+      "Artificial intelligence (AI) is a trending technology.",
     description: "",
   },
   {
-    id: generateUniqueId("task"),
+    id: "task-4",
     columnId: "col-2",
     title:
       "Customize gradient button for login page",
     description: "",
   },
-  // {
-  //   id: generateUniqueId("task"),
-  //   columnId: "col-3",
-  //   title:
-  //     "Artificial intelligence (AI) is technology that enables computers to simulate human intelligence.",
-  //   description: "",
-  // },
   {
-    id: generateUniqueId("task"),
+    id: "task-5",
     columnId: "col-1",
-    title: "one two three task",
+    title: "This is a fake task. Ahihi",
     description: "",
   },
   {
-    id: generateUniqueId("task"),
+    id: "task-6",
     columnId: "col-3",
     title: "fix bug",
     description: "",
@@ -85,6 +78,13 @@ export const taskActivities: TaskActivity[] = [
     user: "Jane Smith",
     date: new Date('2024-08-20T11:45:00'),
     content: "Jane marked the task as in progress.",
+  },
+  {
+    id: "activity-4",
+    taskId: "task-3",
+    user: "Annonymous",
+    date: new Date('2024-08-20T11:45:00'),
+    content: "Oh, really?",
   },
 ];
 
