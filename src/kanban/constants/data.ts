@@ -24,13 +24,13 @@ export const taskData: Task[] = [
     description: "Login and logout in the hotel management web",
   },
   {
-    id: generateUniqueId("task"),
+    id: "task-2",
     columnId: "col-1",
     title: "ahihi task",
     description: "",
   },
   {
-    id: generateUniqueId("task"),
+    id: "task-3",
     columnId: "col-3",
     title:
       "Artificial intelligence (AI) is technology that enables computers to simulate human intelligence.",

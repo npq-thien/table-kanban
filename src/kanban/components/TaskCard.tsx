@@ -2,8 +2,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
-import { useState } from "react";
-import EditTaskModal from "./EditTaskModal";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogActions,
@@ -13,23 +12,26 @@ import {
 } from "@mui/material";
 
 import { Id, Task, TaskActivity } from "../constants/types";
-import { taskActivities as initialTaskActivities } from "../constants/data";
-import { generateUniqueId } from "../utils/helper";
-
 
 type Props = {
   task: Task;
   deleteTask?: (id: Id) => void;
-  editTaskTitle?: (id: Id, title: string) => void;
+  selectTask: (task: Task) => void;
+
+  taskActivities?: TaskActivity[];
 };
 
 const TaskCard = (props: Props) => {
-  const { task, deleteTask, editTaskTitle } = props;
-  const [openEdit, setOpenEdit] = useState(false);
+  const { task, deleteTask, selectTask, taskActivities } = props;
   const [openDeleteTask, setOpenDeleteTask] = useState(false);
-  const [taskActivities, setTaskActivities] = useState(initialTaskActivities);
+  const [activityByTask, setActivityByTask] = useState<TaskActivity[]>([]);
 
-  const handleClose = () => [setOpenEdit(false)];
+  useEffect(() => {
+    const filteredActivities = taskActivities?.filter(
+      (activity) => activity.taskId === task.id
+    );
+    setActivityByTask(filteredActivities || []);
+  }, [taskActivities, task.id]);
 
   const handleOpenDeleteTask = (event: any) => {
     event.stopPropagation(); // Prevents the click event from the parent div (openEdit)
@@ -43,19 +45,6 @@ const TaskCard = (props: Props) => {
   const handleConfirmDeleteTask = () => {
     if (deleteTask) deleteTask(task.id);
     setOpenDeleteTask(false);
-  };
-
-  // Task activity
-  const handleAddingTaskActivity = (activityContent: string) => {
-    const newTaskActivity: TaskActivity = {
-      id: generateUniqueId("activity"),
-      taskId: task.id,
-      user: "Thien Nguyen", // current user
-      date: new Date(),
-      content: activityContent,
-    };
-
-    setTaskActivities([newTaskActivity, ...taskActivities]);
   };
 
   const {
@@ -102,25 +91,23 @@ const TaskCard = (props: Props) => {
         {...listeners}
         key={task.id}
         className="relative max-h-20 overflow-y-auto p-2 rounded-xl bg-white break-words border-2 hover:border-blue-400 overflow-hidden group"
-        onClick={() => setOpenEdit(true)}
+        onClick={() => selectTask(task)}
       >
         <button
           className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-light-2
        hover:bg-light-3 p-1 rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity"
-          // onClick={(e) => {
-          //   e.stopPropagation(); // Prevents the click event from the parent div (openEdit)
-          //   if (deleteTask) deleteTask(task.id);
-          // }}
           onClick={handleOpenDeleteTask}
         >
           <MdDeleteForever />
         </button>
-
         <p>{task.title}</p>
-        <div className="flex items-center gap-1">
-          <IoChatbubbleEllipsesOutline />
-          <p className="text-tiny">{taskActivities.length}</p>
-        </div>
+        
+        {activityByTask.length > 0 && (
+          <div className="flex items-center gap-1">
+            <IoChatbubbleEllipsesOutline />
+            <p className="text-tiny">{activityByTask.length}</p>
+          </div>
+        )}
       </div>
       <Dialog open={openDeleteTask} onClose={handleCloseDeleteTask}>
         <DialogTitle>Confirm deletion</DialogTitle>
@@ -145,14 +132,6 @@ const TaskCard = (props: Props) => {
           </button>
         </DialogActions>
       </Dialog>
-      <EditTaskModal
-        open={openEdit}
-        task={task}
-        taskActivities={taskActivities}
-        addTaskActivity={handleAddingTaskActivity}
-        handleClose={handleClose}
-        editTaskTitle={editTaskTitle}
-      />
     </div>
   );
 };

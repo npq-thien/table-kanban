@@ -5,7 +5,7 @@ import { RxActivityLog } from "react-icons/rx";
 import { IoIosAttach, IoMdClose, IoMdPricetags } from "react-icons/io";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Id, Task, TaskActivity } from "../constants/types";
 import TaskActivityItem from "./TaskActivityItem";
@@ -13,12 +13,13 @@ import { FaArchive, FaArrowRight, FaCopy, FaUser } from "react-icons/fa";
 
 type Props = {
   task: Task;
-  taskActivities: TaskActivity[];
   addTaskActivity: (activityContent: string) => void;
-
+  
   open: boolean;
   handleClose: () => void;
   editTaskTitle?: (id: Id, title: string) => void;
+  
+  taskActivities: TaskActivity[];
 };
 
 const addToCard = [
@@ -56,8 +57,15 @@ const actions = [
 ];
 
 const EditTaskModal = (props: Props) => {
-  const { task, taskActivities, addTaskActivity, open, handleClose, editTaskTitle } = props;
-  // const [taskActivities, setTaskActivities] = useState(initialTaskActivities);
+  const {
+    task,
+    taskActivities: initTaskActivities,
+    addTaskActivity,
+    open,
+    handleClose,
+    editTaskTitle,
+  } = props;
+  const [taskActivities, setTaskActivities] = useState(initTaskActivities)
   const [isAddingTaskActivity, setIsAddingTaskActivity] = useState(false);
   const [activityContent, setActivityContent] = useState("");
 
@@ -66,46 +74,44 @@ const EditTaskModal = (props: Props) => {
   const [taskDescription, setTaskDescription] = useState(task.description);
   const [isEditTaskDescription, setIsEditTaskDescription] = useState(false);
 
+
+  useEffect(() => {
+    // console.log('sync')
+    setTaskTitle(task.title);
+    setTaskActivities(initTaskActivities)
+  }, [task.title, initTaskActivities]);
+
   const handleEditTaskTitle = () => {
     if (editTaskTitle) editTaskTitle(task.id, taskTitle);
     if (taskTitle.trim() !== "") {
       setIsEditTaskTitle(false);
     }
+    task.title = taskTitle;
   };
 
   const handleAddingTaskActivity = () => {
-    // const newTaskActivity: TaskActivity = {
-    //   id: generateUniqueId("activity"),
-    //   taskId: task.id,
-    //   user: "Thien Nguyen", // current user
-    //   date: new Date(),
-    //   content: activityContent,
-    // };
-
-    // setTaskActivities([newTaskActivity, ...taskActivities]);
-    addTaskActivity(activityContent)
+    addTaskActivity(activityContent);
   };
+
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth={true}>
       <div className="bg-slate-100">
         <DialogTitle className="flex items-center gap-4 border-b-2">
           <MdOutlineSubtitles />
-          {!isEditTaskTitle && (
+          {!isEditTaskTitle ? (
             <h2
               className="text-2xl font-semibold p-1 w-full"
               onClick={() => setIsEditTaskTitle(true)}
             >
               {task.title}
             </h2>
-          )}
-          {isEditTaskTitle && (
-            <div className="w-full mr-8">
+          ) : (
               <input
                 autoFocus
-                className="text-2xl font-semibold w-full p-1 px-2 rounded-md"
+                className="text-2xl font-semibold w-full p-1 px-2 rounded-md mr-8"
                 placeholder="Add a description"
-                value={taskTitle}
+                defaultValue={taskTitle}
                 //    TODO: handle empty case
                 onBlur={handleEditTaskTitle}
                 onKeyDown={(e) => {
@@ -115,7 +121,6 @@ const EditTaskModal = (props: Props) => {
                 }}
                 onChange={(e) => setTaskTitle(e.target.value)}
               />
-            </div>
           )}
           <button
             className="absolute right-4 p-1 rounded-md hover:bg-dark-1"
@@ -257,7 +262,7 @@ const EditTaskModal = (props: Props) => {
                   {item.title}
                 </button>
               ))}
-              </div>
+            </div>
           </div>
         </DialogContent>
       </div>

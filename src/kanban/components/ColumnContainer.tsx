@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa";
 import { BsThreeDots } from "react-icons/bs";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 
-import { Column, Id, Task } from "../constants/types";
+import { Column, Id, Task, TaskActivity } from "../constants/types";
 import {
   Dialog,
   DialogActions,
@@ -25,9 +25,12 @@ type Props = {
   onShowToast: () => void;
 
   tasks: Task[];
+  selectTask: (task: Task) => void;
   createTask: (columnId: Id, taskTitle: string) => void;
   deleteTask?: (taskId: Id) => void;
   editTaskTitle?: (taskId: Id, newTaskTitle: string) => void;
+
+  taskActivities?: TaskActivity[];
 };
 
 const ColumnContainer = (props: Props) => {
@@ -37,9 +40,10 @@ const ColumnContainer = (props: Props) => {
     editColumnTitle,
     onShowToast,
     tasks,
+    selectTask,
     createTask,
-    editTaskTitle,
     deleteTask,
+    taskActivities,
   } = props;
   const [isAddingTask, setIsAddingTask] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
@@ -49,10 +53,10 @@ const ColumnContainer = (props: Props) => {
     return tasks.map((task) => task.id);
   }, [tasks]);
 
+
   const [openMenu, setOpenMenu] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState<null | HTMLElement>(null);
   const [openDeleteColumn, setOpenDeleteColumn] = useState(false);
-  // const [openToast, setOpenToast] = useState(false);
 
   const {
     setNodeRef,
@@ -85,11 +89,6 @@ const ColumnContainer = (props: Props) => {
       setTaskTitle("");
       setIsAddingTask(false);
     }
-  };
-
-  //TODO should add a popup
-  const handleDeleteTask = () => {
-    // deleteTask(task.)
   };
 
   // Confirm delete
@@ -126,14 +125,6 @@ const ColumnContainer = (props: Props) => {
       style={style}
       className="w-[250px] h-[400px] max-h-[500px] flex flex-col gap-4 bg-cream rounded-lg p-2"
     >
-      {/* <Snackbar
-        open={openToast}
-        onClose={handleCloseToast}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert severity="success">Delete column successfully!</Alert>
-      </Snackbar> */}
       <Dialog open={openDeleteColumn}>
         <DialogTitle>Confirm deletion</DialogTitle>
         <DialogContent>
@@ -220,9 +211,11 @@ const ColumnContainer = (props: Props) => {
         <SortableContext items={taskIds}>
           {tasks.map((task) => (
             <TaskCard
+              key={task.id}
               task={task}
+              selectTask={selectTask}
               deleteTask={deleteTask}
-              editTaskTitle={editTaskTitle}
+              taskActivities={taskActivities}
             />
           ))}
         </SortableContext>

@@ -1,11 +1,14 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { generateId } from "../utils/helper";
+import { generateId, generateUniqueId } from "../utils/helper";
 import { Column, Id, Task, TaskActivity } from "../constants/types";
 import ColumnContainer from "./ColumnContainer";
-// import { taskActivities as initialTaskActivities } from "../constants/data";
-import { columnData, taskData } from "../constants/data";
+import {
+  columnData,
+  taskData,
+  taskActivities as taskActivityData,
+} from "../constants/data";
 import {
   DndContext,
   DragEndEvent,
@@ -23,15 +26,19 @@ import TaskCard from "./TaskCard";
 import { FaPlus } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { Alert, Snackbar } from "@mui/material";
+import EditTaskModal from "./EditTaskModal";
 
 const KanbanBoard = () => {
   const [columns, setColumns] = useState<Column[]>(columnData);
   const [tasks, setTasks] = useState<Task[]>(taskData);
+  const [taskActivities, setTaskActivities] = useState(taskActivityData);
   const [activeColumn, setActiveColumn] = useState<Column | null>();
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [isAddingNewColumn, setIsAddingNewColumn] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [openToast, setOpenToast] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
 
@@ -42,6 +49,28 @@ const KanbanBoard = () => {
       },
     })
   );
+
+  // Task
+  const selectTask = (task: Task) => {
+    setSelectedTask(task);
+    setOpenEdit(true);
+  };
+
+  // Task activities
+  const handleClose = () => [setOpenEdit(false)];
+
+  const handleAddingTaskActivity = (activityContent: string) => {
+    const newTaskActivity: TaskActivity = {
+      id: generateUniqueId("activity"),
+      taskId: selectedTask?.id || "",
+      user: "Thien Nguyen", // current user
+      date: new Date(),
+      content: activityContent,
+    };
+
+    setTaskActivities([newTaskActivity, ...taskActivities]);
+  };
+
 
   //  Column
   const createNewColumn = (columnTitle: string) => {
@@ -229,6 +258,8 @@ const KanbanBoard = () => {
     setOpenToast(false);
   };
 
+  // console.log('change activity', taskActivities)
+
   return (
     <div className="overflow-x-auto min-h-screen w-full bg-gradient-to-r from-[#FEC362] via-[#ECE854] to-[#5B9DFF]">
       <nav className="w-full bg-gray-300 p-4 flex items-center gap-4 border-b-2 border-black">
@@ -272,9 +303,11 @@ const KanbanBoard = () => {
                     editColumnTitle={editColumnTitle}
                     onShowToast={handleOpenToast}
                     tasks={tasks.filter((task) => task.columnId === col.id)}
+                    selectTask={selectTask}
                     createTask={createTask}
                     deleteTask={deleteTask}
                     editTaskTitle={editTaskTitle}
+                    taskActivities={taskActivities}
                   />
                 </div>
               ))}
@@ -289,6 +322,7 @@ const KanbanBoard = () => {
                   column={activeColumn}
                   deleteColumn={deleteColumn}
                   onShowToast={handleOpenToast}
+                  selectTask={selectTask}
                   editColumnTitle={editColumnTitle}
                   tasks={tasks.filter(
                     (task) => task.columnId === activeColumn.id
@@ -297,7 +331,12 @@ const KanbanBoard = () => {
                 />
               )}
 
-              {activeTask && <TaskCard task={activeTask} />}
+              {activeTask && (
+                <TaskCard
+                  selectTask={selectTask}
+                  task={activeTask}
+                />
+              )}
             </DragOverlay>,
             document.body
           )}
@@ -339,6 +378,18 @@ const KanbanBoard = () => {
           )}
         </div>
       </div>
+
+      {/* Modal for editing task */}
+      {selectedTask && (
+        <EditTaskModal
+          open={openEdit}
+          task={selectedTask}
+          taskActivities={taskActivities}
+          addTaskActivity={handleAddingTaskActivity}
+          handleClose={handleClose}
+          editTaskTitle={editTaskTitle}
+        />
+      )}
     </div>
   );
 };
