@@ -3,6 +3,7 @@ import {
   Checkbox,
   Modal,
   Pagination,
+  Select,
   Table,
   TableBody,
   TableHead,
@@ -10,7 +11,7 @@ import {
   TableRow,
   TextInput,
 } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaSearch, FaPlus, FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { columns, rowData as initialRowData } from "../constants/data";
@@ -38,7 +39,7 @@ const TableData = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentRowData, setCurrentRowData] = useState(null);
   const [rowData, setRowData] = useState(initialRowData); // for sort
-  const [filteredRows, setFilteredRows] = useState(rowData); // this state for search, filter
+  const [filteredRows, setFilteredRows] = useState(rowData); // for search, filter
   const [paginationRows, setPaginationRows] = useState(filteredRows); // for pagination, depends on filtered row
   const [sortProps, setSortProps] = useState({
     direction: null,
@@ -155,7 +156,10 @@ const TableData = () => {
 
   // Add row
   const handleAddRow = () => {
-    const newId = Number(rowData.length) + 1;
+    let rowIds = rowData.map((r) => Number(r.id));
+    const maxId = Math.max(...rowIds);
+
+    const newId = Number(maxId) + 1;
     const newRow = {
       id: String(newId),
       name: "",
@@ -330,7 +334,21 @@ const TableData = () => {
 
         {/* Pagination */}
         <div className="flex flex-col gap-2 items-end mt-4">
-          <p>{filteredRows.length} items</p>
+          <p className="font-semibold">{filteredRows.length} items</p>
+          <div className="flex items-center gap-2">
+            <p className="font-semibold">Page size:</p>
+            <Select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setCurrentPage(1); // prevent change page size to larger get empty data
+                setItemsPerPage(e.target.value);
+              }}
+            >
+              <option value={2}>2</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+            </Select>
+          </div>
           <Pagination
             theme={customPaginationTheme}
             showIcons

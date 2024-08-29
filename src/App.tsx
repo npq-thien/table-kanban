@@ -1,7 +1,8 @@
-import { Link, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { TableData } from "./table-flowbite/components";
+import { Link, Route, Routes } from "react-router-dom";
+
 import KanbanBoard from "./kanban/components/KanbanBoard";
+import TableData from "./table-flowbite/components/TableData";
 
 function Home() {
   return (

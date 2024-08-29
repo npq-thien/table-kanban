@@ -80,7 +80,6 @@ const EditRowPopup = ({ open, handleClose, data, handleSave }) => {
                 })}
               />
               <p className="text-red-500">{errors.email?.message}</p>
-              <p className="text-red-500">{errors.email?.message}</p>
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="status" value="Status" />

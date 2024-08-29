@@ -8,6 +8,8 @@ module.exports = {
       colors: {
         cream: {
           DEFAULT: "#eeeeea",
+          3: "#dedece",
+          4: "#c7c7bf",
         },
         primary: {
           DEFAULT: "#FA9191",

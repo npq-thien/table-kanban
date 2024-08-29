@@ -122,4 +122,20 @@ export const rowData = [
     email: "iris.west@example.com",
     status: "Inactive",
   },
+  {
+    id: 13,
+    name: "Alexander Jay",
+    age: 68,
+    gender: "Female",
+    email: "Alexander.Jay@example.com",
+    status: "Expired",
+  },
+  {
+    id: 14,
+    name: "Oke LaLaLand",
+    age: 50,
+    gender: "Male",
+    email: "lalaland@example.com",
+    status: "Expired",
+  },
 ];

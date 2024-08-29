@@ -112,9 +112,10 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] h-full overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
-      >
-      </div>
+        // className="w-[250px] h-full overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-3 to-transparent rounded-lg p-2"
+
+      ></div>
     );
   }
 
@@ -122,7 +123,8 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] h-full overflow-y-auto flex flex-col gap-4 bg-cream rounded-lg p-2"
+      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-3 to-transparent rounded-lg p-2"
+      // className="w-[250px] h-full flex flex-col gap-4 bg-cream-3 rounded-lg p-2 relative"
       id={column.id.toString()}
     >
       <Menu
@@ -148,7 +150,7 @@ const ColumnContainer = (props: Props) => {
       <header
         {...listeners}
         {...attributes}
-        className="sticky top-0 bg-cream flex-between gap-2 font-bold"
+        className="sticky top-0 flex-between gap-2 font-bold"
       >
         <div
           className="flex gap-2 items-center"
@@ -157,7 +159,7 @@ const ColumnContainer = (props: Props) => {
           {!isEditTitle ? (
             <>
               {column.title}
-              <p className="rounded-full bg-light-2 px-2">{tasks.length}</p>
+              <p className="rounded-full bg-light-1 px-2">{tasks.length}</p>
             </>
           ) : (
             <input
@@ -238,6 +240,8 @@ const ColumnContainer = (props: Props) => {
           Add a card
         </button>
       )}
+
+      {/* Dialog confirm */}
       <Dialog open={openDeleteColumn}>
         <DialogTitle>Confirm deletion</DialogTitle>
         <DialogContent>
