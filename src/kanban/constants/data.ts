@@ -1,18 +1,17 @@
-import { generateUniqueId } from "../utils/helper";
 import { Column, Task, TaskActivity } from "./types";
 
 export const columnData: Column[] = [
   {
     id: "col-1",
-    title: "To Do",
+    title: "Open 🔘",
   },
   {
     id: "col-2",
-    title: "In Progress",
+    title: "In Progress ⏳",
   },
   {
     id: "col-3",
-    title: "Done",
+    title: "Done ✔️",
   },
 ];
 
@@ -46,7 +45,7 @@ export const taskData: Task[] = [
   {
     id: "task-5",
     columnId: "col-1",
-    title: "This is a fake task. Ahihi",
+    title: "This is a fake task 🤠",
     description: "",
   },
   {

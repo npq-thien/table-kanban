@@ -29,6 +29,11 @@ import { Alert, Snackbar } from "@mui/material";
 import EditTaskModal from "./EditTaskModal";
 
 const KanbanBoard = () => {
+  const [placeholder, setPlaceholder] = useState<null | {
+    width: number;
+    height: number;
+  }>(null);
+
   const [columns, setColumns] = useState<Column[]>(columnData);
   const [tasks, setTasks] = useState<Task[]>(taskData);
   const [taskActivities, setTaskActivities] = useState(taskActivityData);
@@ -102,8 +107,55 @@ const KanbanBoard = () => {
     });
   };
 
+  // const onDragStart = (e: DragStartEvent) => {
+  //   if (e.active.data.current?.type === "Column") {
+  //     setActiveColumn(e.active.data.current.column);
+  //     return;
+  //   }
+
+  //   if (e.active.data.current?.type === "Task") {
+  //     setActiveTask(e.active.data.current.task);
+  //     return;
+  //   }
+  // };
+
+  // // DND column
+  // const onDragEnd = (e: DragEndEvent) => {
+  //   setActiveColumn(null);
+  //   setActiveTask(null);
+
+  //   const { active, over } = e;
+  //   if (!over) return;
+  //   const activeColumnId = active.id;
+  //   const overColumnId = over.id;
+  //   if (activeColumnId === overColumnId) return;
+
+  //   if (
+  //     active.data.current?.type === "Column" &&
+  //     over.data.current?.type === "Column"
+  //   ) {
+  //     setColumns((columns) => {
+  //       const activeColumnIndex = columns.findIndex(
+  //         (col) => col.id === activeColumnId
+  //       );
+  //       const overColumnIndex = columns.findIndex(
+  //         (col) => col.id === overColumnId
+  //       );
+
+  //       return arrayMove(columns, activeColumnIndex, overColumnIndex);
+  //     });
+  //   }
+  // };
+
   const onDragStart = (e: DragStartEvent) => {
     if (e.active.data.current?.type === "Column") {
+      const draggedElement = document.getElementById(e.active.id.toString());
+      if (draggedElement) {
+        const { width, height } = draggedElement.getBoundingClientRect();
+        // Width = 0 to assume there is only a placeholder column just height
+        // it prevent the Board think that there are n + 1 columns in the SortableContext
+        setPlaceholder({ width: 0, height });
+      }
       setActiveColumn(e.active.data.current.column);
       return;
     }
@@ -114,10 +166,10 @@ const KanbanBoard = () => {
     }
   };
 
-  // DND column
   const onDragEnd = (e: DragEndEvent) => {
     setActiveColumn(null);
     setActiveTask(null);
+    setPlaceholder(null); // Remove the placeholder column after dragging ends
 
     const { active, over } = e;
     if (!over) return;
@@ -250,20 +302,32 @@ const KanbanBoard = () => {
           <SortableContext items={columnIds}>
             <div className="flex gap-4">
               {columns.map((col) => (
-                <ColumnContainer
-                  key={col.id}
-                  column={col}
-                  deleteColumn={deleteColumn}
-                  editColumnTitle={editColumnTitle}
-                  onShowToast={handleOpenToast}
-                  tasks={tasks.filter((task) => task.columnId === col.id)}
-                  selectTask={selectTask}
-                  createTask={createTask}
-                  deleteTask={deleteTask}
-                  editTaskTitle={editTaskTitle}
-                  taskActivities={taskActivities}
-                />
+                <div id={col.id.toString()}>
+                  <ColumnContainer
+                    key={col.id}
+                    column={col}
+                    deleteColumn={deleteColumn}
+                    editColumnTitle={editColumnTitle}
+                    onShowToast={handleOpenToast}
+                    tasks={tasks.filter((task) => task.columnId === col.id)}
+                    selectTask={selectTask}
+                    createTask={createTask}
+                    deleteTask={deleteTask}
+                    editTaskTitle={editTaskTitle}
+                    taskActivities={taskActivities}
+                  />
+                </div>
               ))}
+              {/* Render the placeholder if dragging a column */}
+              {placeholder && (
+                <div
+                  style={{
+                    width: placeholder.width,
+                    height: placeholder.height,
+                    backgroundColor: "transparent",
+                  }}
+                />
+              )}
             </div>
           </SortableContext>
 

@@ -79,7 +79,7 @@ const TaskCard = (props: Props) => {
       >
         {task.title}
         {activityByTask.length > 0 && (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mt-2">
             <IoChatbubbleEllipsesOutline />
             <p className="text-tiny">{activityByTask.length}</p>
           </div>
@@ -109,7 +109,7 @@ const TaskCard = (props: Props) => {
         <p>{task.title}</p>
 
         {activityByTask.length > 0 && (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 mt-2">
             <IoChatbubbleEllipsesOutline />
             <p className="text-tiny">{activityByTask.length}</p>
           </div>

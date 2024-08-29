@@ -112,7 +112,7 @@ const ColumnContainer = (props: Props) => {
       <div
         ref={setNodeRef}
         style={style}
-        className="w-[250px] min-h-[200px]  overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
+        className="w-[250px] h-full overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
       >
       </div>
     );
@@ -122,7 +122,8 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] min-h-[200px] h-full overflow-y-auto flex flex-col gap-4 bg-cream rounded-lg p-2"
+      className="w-[250px] h-full overflow-y-auto flex flex-col gap-4 bg-cream rounded-lg p-2"
+      id={column.id.toString()}
     >
       <Menu
         open={openMenu}
