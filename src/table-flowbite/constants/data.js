@@ -45,7 +45,7 @@ export const rowData = [
   {
     id: 3,
     name: "Alice Johnson",
-    age: 25,
+    age: 14,
     gender: "Female",
     email: "alice.johnson@example.com",
     status: "Active",

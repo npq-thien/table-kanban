@@ -187,7 +187,7 @@ const TableData = () => {
     else if (sortProps.column === key && sortProps.direction === "desc")
       direction = null;
 
-    setSortProps({ column: key, direction: direction });
+    setSortProps({ column: key, direction });
     if (direction) {
       const sortedData = [...rowData].sort((a, b) => {
         if (a[key] <= b[key]) return direction === "asc" ? -1 : 1;
@@ -255,7 +255,6 @@ const TableData = () => {
           striped={true}
           hoverable={true}
           className="shadow-md w-full"
-          color="#365486"
         >
           <TableHead>
             <Table.HeadCell>

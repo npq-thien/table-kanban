@@ -7,7 +7,7 @@ const AutoHideToast = ({ show, message, onClose }) => {
     if (show) {
       const timer = setTimeout(() => {
         onClose();
-      }, 2000);
+      }, 2500);
 
       return () => clearTimeout(timer);
     }
