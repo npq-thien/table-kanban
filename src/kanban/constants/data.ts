@@ -11,7 +11,7 @@ export const columnData: Column[] = [
   },
   {
     id: "col-3",
-    title: "Done ✔️",
+    title: "Done ✅",
   },
 ];
 

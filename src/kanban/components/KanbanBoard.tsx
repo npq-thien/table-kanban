@@ -36,7 +36,8 @@ const KanbanBoard = () => {
 
   const [columns, setColumns] = useState<Column[]>(columnData);
   const [tasks, setTasks] = useState<Task[]>(taskData);
-  const [taskActivities, setTaskActivities] = useState(taskActivityData);
+  const [taskActivities, setTaskActivities] =
+    useState<TaskActivity[]>(taskActivityData);
   const [activeColumn, setActiveColumn] = useState<Column | null>();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>();
@@ -152,7 +153,7 @@ const KanbanBoard = () => {
       const draggedElement = document.getElementById(e.active.id.toString());
       if (draggedElement) {
         const { width, height } = draggedElement.getBoundingClientRect();
-        // Width = 0 to assume there is only a placeholder column just height
+        // Width = 0 to assume there is a placeholder column has only height
         // it prevent the Board think that there are n + 1 columns in the SortableContext
         setPlaceholder({ width: 0, height });
       }
@@ -206,7 +207,7 @@ const KanbanBoard = () => {
     const isActiveTask = active.data.current?.type === "Task";
     const isOverTask = over.data.current?.type === "Task";
 
-    console.log("Active task ID:", activeId, "Over ID:", overId);
+    // console.log("Active task ID:", activeId, "Over ID:", overId);
     if (!isActiveTask) return;
 
     // Drop a task over another task
@@ -214,7 +215,7 @@ const KanbanBoard = () => {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((task) => task.id === activeId);
         const overIndex = tasks.findIndex((task) => task.id === overId);
-
+        // console.log("chanig")
         tasks[activeIndex].columnId = tasks[overIndex].columnId;
 
         return arrayMove(tasks, activeIndex, overIndex);
@@ -331,7 +332,33 @@ const KanbanBoard = () => {
             </div>
           </SortableContext>
 
-          {createPortal(
+          <DragOverlay>
+              {activeColumn && (
+                <ColumnContainer
+                  key={activeColumn.id}
+                  column={activeColumn}
+                  deleteColumn={deleteColumn}
+                  onShowToast={handleOpenToast}
+                  selectTask={selectTask}
+                  editColumnTitle={editColumnTitle}
+                  tasks={tasks.filter(
+                    (task) => task.columnId === activeColumn.id
+                  )}
+                  createTask={createTask}
+                  taskActivities={taskActivities}
+                />
+              )}
+
+              {activeTask && (
+                <TaskCard
+                  selectTask={selectTask}
+                  task={activeTask}
+                  taskActivities={taskActivities}
+                />
+              )}
+            </DragOverlay>
+
+          {/* {createPortal(
             <DragOverlay>
               {activeColumn && (
                 <ColumnContainer
@@ -358,7 +385,7 @@ const KanbanBoard = () => {
               )}
             </DragOverlay>,
             document.body
-          )}
+          )} */}
         </DndContext>
         <div>
           {!isAddingNewColumn ? (

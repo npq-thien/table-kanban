@@ -113,7 +113,7 @@ const ColumnContainer = (props: Props) => {
         ref={setNodeRef}
         style={style}
         // className="w-[250px] h-full overflow-y-auto bg-slate-50 rounded-lg p-2 border-2 border-blue-400 opacity-50"
-      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-3 to-transparent rounded-lg p-2"
+      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-4 to-transparent rounded-lg p-2"
 
       ></div>
     );
@@ -123,7 +123,7 @@ const ColumnContainer = (props: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-3 to-transparent rounded-lg p-2"
+      className="w-[250px] h-full flex flex-col gap-4 bg-gradient-to-b from-cream-4 to-[rgba(255,255,255,0.1)] rounded-lg p-2"
       // className="w-[250px] h-full flex flex-col gap-4 bg-cream-3 rounded-lg p-2 relative"
       id={column.id.toString()}
     >
